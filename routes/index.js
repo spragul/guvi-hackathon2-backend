@@ -2,13 +2,12 @@ var express = require('express');
 const { productModel } = require('../schema/indexschema');
 var { dbUrl } = require('../dbconfig/dbconfig');
 var mongoose = require('mongoose');
-const {validate} = require('../dbconfig/auth')
 var router = express.Router();
 mongoose.connect(dbUrl)
 
 
 /* GET home page. */
-router.get('/',validate, async function (req, res) {
+router.get('/', async function (req, res) {
   try {
     let product = await productModel.find();
     res.status(200).send({

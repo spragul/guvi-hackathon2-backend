@@ -3,14 +3,13 @@ const router = express.Router();
 const {cartModel} = require('../schema/cartSchema')
 const mongoose = require('mongoose')
 const {dbUrl} = require('../dbconfig/dbconfig')
-const {validate} = require('../dbconfig/auth')
 mongoose.connect(dbUrl)
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 const saltRounds = 10
 
 
-router.get('/',validate,async(req, res)=> {
+router.get('/',async(req, res)=> {
   try {
   let carts =await cartModel.find({});
     res.status(200).send({
