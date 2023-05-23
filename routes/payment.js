@@ -7,18 +7,6 @@ const mongoose = require('mongoose')
 const {dbUrl} = require('../dbconfig/dbconfig')
 mongoose.connect(dbUrl)
 
-
-
-// const OrderSchema = mongoose.Schema({
-//   isPaid: Boolean,
-//   amount: Number,
-//   razorpay: {
-//     orderId: String,
-//     paymentId: String,
-//     signature: String,
-//   },
-// });
-// const Order = mongoose.model('Order', OrderSchema);
 router.use(express.json({ extended: false }));
 router.get('/get-razorpay-key', (req, res) => {
   res.send({ key: process.env.RAZORPAY_KEY_ID });
