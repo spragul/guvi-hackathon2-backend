@@ -49,6 +49,7 @@ router.post('/signup',async(req,res)=>{
 router.post('/login',async(req,res)=>{
   try {
     let user = await UserModel.findOne({email:req.body.email})
+    console.log(user)
     if(user)
     {
       //verify the password
@@ -60,9 +61,14 @@ router.post('/login',async(req,res)=>{
           id:user._id,
           role:user.role
         })
+       
         res.status(200).send({
           message:"User Login Successfull!",
-          token
+          token:token,
+          myName:user.name,
+          myRole:user.role,
+          myid:user._id
+
         })
       }
       else

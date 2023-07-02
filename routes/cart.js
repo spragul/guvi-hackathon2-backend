@@ -22,9 +22,8 @@ router.get('/',async(req, res)=> {
 
 router.post('/create/:productId', async (req, res) => {
   try {
-    let product = await cartModel.findOne({ id: req.params.id })
-    console.log(product);
-    if (product) {
+    let product = await cartModel.findOne({ _id: req.params.productId })
+    if (!product) {
       let product = await cartModel.create(req.body);
       res.status(200).send(product)
     } else {
@@ -39,9 +38,9 @@ router.post('/create/:productId', async (req, res) => {
 })
 router.delete('/delete/:id', async (req, res) => {
   try {
-    let product = await cartModel.findOne({ id: req.params._id })
+    let product = await cartModel.findOne({ _id: req.params.id })
     if (product) {
-      let product = await cartModel.deleteOne({ id: req.params._id })
+      let product = await cartModel.deleteOne({ _id: req.params.id })
       res.status(200).send({
         message: "product Deleted Successfull!"
       })

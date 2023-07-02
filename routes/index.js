@@ -43,14 +43,15 @@ router.post('/add/product', async (req, res) => {
 router.put('/product/edit/:id', async (req, res) => {
   try {
     console.log(req.params.id);
-    let product = await productModel.findOne({ id: req.params.id })
+    let product = await productModel.findOne({ _id: req.params.id })
     if (product) {
-      product.id = req.body.id
-      product.mobileName = req.body.mobileName
+      product.productName = req.body.productName
+      product.categories=req.body.categories
       product.image = req.body.image
       product.model = req.body.model
       product.price = req.body.price
       await product.save()
+      console.log(product)
       res.status(200).send({
         product,
         message: "product update successfully"
@@ -67,9 +68,9 @@ router.put('/product/edit/:id', async (req, res) => {
 //delete product
 router.delete('/product/delete/:id', async (req, res) => {
   try {
-    let product = await productModel.findOne({ id: req.params.id })
+    let product = await productModel.findOne({ _id: req.params.id })
     if (product) {
-      let product = await productModel.deleteOne({ id: req.params.id })
+      let product = await productModel.deleteOne({ _id: req.params.id })
       res.status(200).send({
         message: "product Deleted Successfull!"
       })
