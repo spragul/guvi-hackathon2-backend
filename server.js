@@ -1,7 +1,7 @@
 import { app } from "./app.js";
 import Razorpay from "razorpay";
 const mongoose = require('mongoose')
-const {dbUrl} = require('../dbconfig/dbconfig')
+const { dbUrl } = require('../dbconfig/dbconfig')
 mongoose.connect(dbUrl)
 
 export const instance = new Razorpay({

@@ -1,26 +1,37 @@
 var express = require('express');
 const router = express.Router();
-const {cartModel} = require('../schema/cartSchema')
+const { cartModel } = require('../schema/cartSchema')
 const mongoose = require('mongoose')
-const {dbUrl} = require('../dbconfig/dbconfig')
+const { dbUrl } = require('../dbconfig/dbconfig')
 mongoose.connect(dbUrl)
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 const saltRounds = 10
+const { validate } = require('../dbconfig/auth')
 
-
-router.get('/',async(req, res)=> {
+router.get('/', validate, async (req, res) => {
   try {
-  let carts =await cartModel.find({});
+    let carts = await cartModel.find({});
     res.status(200).send({
       carts
     })
   } catch (error) {
-    res.status(500).send({message:"Internal Server Error",error})
+    res.status(500).send({ message: "Internal Server Error", error })
   }
 });
 
-router.post('/create/:productId', async (req, res) => {
+router.get('/:id', validate, async (req, res) => {
+  try {
+    let carts = await cartModel.find({ userId: req.params.id });
+    res.status(200).send({
+      carts
+    })
+  } catch (error) {
+    res.status(500).send({ message: "Internal Server Error", error })
+  }
+});
+
+router.post('/create/:productId', validate, async (req, res) => {
   try {
     let product = await cartModel.findOne({ _id: req.params.productId })
     if (!product) {
@@ -36,7 +47,7 @@ router.post('/create/:productId', async (req, res) => {
     })
   }
 })
-router.delete('/delete/:id', async (req, res) => {
+router.delete('/delete/:id', validate, async (req, res) => {
   try {
     let product = await cartModel.findOne({ _id: req.params.id })
     if (product) {

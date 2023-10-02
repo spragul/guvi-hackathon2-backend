@@ -4,10 +4,10 @@ var { dbUrl } = require('../dbconfig/dbconfig');
 var mongoose = require('mongoose');
 var router = express.Router();
 mongoose.connect(dbUrl)
-
+const { validate, Adminvalidate } = require('../dbconfig/auth');
 
 /* GET home page. */
-router.get('/', async function (req, res) {
+router.get('/', validate, async function (req, res) {
   try {
     let product = await productModel.find();
     res.status(200).send({
@@ -23,7 +23,7 @@ router.get('/', async function (req, res) {
 });
 
 //inset product
-router.post('/add/product', async (req, res) => {
+router.post('/add/product', Adminvalidate, async (req, res) => {
   try {
     let product = await productModel.findOne({ id: req.body.id })
     if (!product) {
@@ -40,18 +40,16 @@ router.post('/add/product', async (req, res) => {
   }
 })
 //update product details
-router.put('/product/edit/:id', async (req, res) => {
+router.put('/product/edit/:id', Adminvalidate, async (req, res) => {
   try {
-    console.log(req.params.id);
     let product = await productModel.findOne({ _id: req.params.id })
     if (product) {
       product.productName = req.body.productName
-      product.categories=req.body.categories
+      product.categories = req.body.categories
       product.image = req.body.image
       product.model = req.body.model
       product.price = req.body.price
       await product.save()
-      console.log(product)
       res.status(200).send({
         product,
         message: "product update successfully"
@@ -66,7 +64,7 @@ router.put('/product/edit/:id', async (req, res) => {
 })
 
 //delete product
-router.delete('/product/delete/:id', async (req, res) => {
+router.delete('/product/delete/:id', Adminvalidate, async (req, res) => {
   try {
     let product = await productModel.findOne({ _id: req.params.id })
     if (product) {
